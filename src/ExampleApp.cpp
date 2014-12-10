@@ -14,5 +14,7 @@ int main()
     int z2 = Multiply::twoValues(x,y);
     printf("Multiply Result: %d\n", z2);
  
+    int z3 = Multiply::twoValues(x,y+2);
+    printf("Multiply Result: %d\n", z3);
     return 0;
 }

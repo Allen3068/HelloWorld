@@ -6,7 +6,7 @@
 int main()
 {
     int x = 4;
-    int y = 6;
+    int y = 5;
  
     int z1 = Addition::twoValues(x,y);
     printf("\nAddition Result: %d\n", z1);

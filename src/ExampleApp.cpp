@@ -1,12 +1,12 @@
 #include "Addition.hpp"
 #include "Multiply.hpp"
-	 
 #include <stdio.h>
 	 
 int main()
 {
+/*  
     int x = 4;
-    int y = 6;
+    int y = 5;
  
     int z1 = Addition::twoValues(x,y);
     printf("\nAddition Result: %d\n", z1);
@@ -14,5 +14,8 @@ int main()
     int z2 = Multiply::twoValues(x,y);
     printf("Multiply Result: %d\n", z2);
  
+    int z3 = Multiply::twoValues(x,y+2);
+    printf("Multiply Result: %d\n", z3);
+*/
     return 0;
 }

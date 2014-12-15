@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<project name="HelloWord" default="info" basedir=".">
+  <description>
+      Jenkins Ant file for HelloWorld
+  </description>
+  <!-- set global properties for this build -->
+  <property name="app" location="HelloWorld"/>
+  <property name="make.cmd" value="/usr/bin/make"/>
+  <property name="build.native" value="./src"/>
+  <property name="doxygen.cmd" value="/usr/bin/doxygen"/>
+  <property name="cppcheck.cmd" value="/usr/bin/cppcheck"/>
+  <property name="build.test" value="./test/src"/>
+  <property name="gcovr.cmd" value="/usr/local/bin/gcovr"/>
+ 
+  <target name="info">
+    <echo> Hello World! -- Welcome to Apache Ant </echo>
+    <echo>Apache Ant version is ${ant.version}</echo>
+    <echo>Apache Ant file is ${ant.file}</echo>
+    <echo>Apache Ant basedir is ${basedir}</echo>
+    <echo>Apache Ant java version is ${ant.java.version}</echo>
+    <echo>Apache Ant project name is ${ant.project.name}</echo>
+    <echo>Apache Ant project default target is ${ant.project.default-target}</echo>
+    <echo>Apache Ant project invoked targets are ${ant.project.invoked-targets}</echo>
+    <echo>Apache Ant core lib is ${ant.core.lib}</echo>
+    <echo>Apache Ant home is ${ant.home}</echo>
+    <echo>Apache Ant library dir is ${ant.library.dir}</echo>
+  </target>
+ 
+  <target name="deploy" depends="package">
+    <echo> Deploy started ... </echo>
+  </target>
+
+  <target name="package" depends="clean,compile">
+    <echo> package started ... </echo>
+  </target>
+
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+  </target>
+ 
+  <target name="compile"
+        description="compile the source" >
+    <exec dir="${build.native}" executable="${make.cmd}" failonerror="true">
+    </exec>
+  </target>
+ 
+  <target name="compile-test" description="compile the source" depends="compile">
+    <exec dir="${build.test}" executable="${make.cmd}" failonerror="true">
+    </exec>
+  </target>
+
+  <target name="clean" description="clean up" >
+    <exec dir="${build.native}" executable="${make.cmd}" failonerror="true">
+    <arg value="clean"/>
+    </exec>
+    <exec dir="${build.test}" executable="${make.cmd}" failonerror="false">
+      <arg value="clean"/>
+    </exec>
+    <delete quiet="true">
+      <fileset dir="${build.native}/Docs/html" includes="**/*" />
+    </delete>
+  </target>
+ 
+  <target name="run" description="Run application" depends="compile">
+    <exec dir="${build.native}" executable="./exampleapp" failonerror="true">
+    </exec>
+  </target>
+ 
+  <target name="run-test" description="Run application" depends="compile-test">
+    <exec dir="${build.test}" executable="./testAll" failonerror="true">
+      <arg line="--gtest_output='xml:./testAll.xml'"/>
+    </exec>
+  </target>
+
+  <target name="doxygen" description="Process documentation" >
+    <exec executable="${doxygen.cmd}"
+          dir="${build.native}"
+          failonerror="false">
+       <arg value="../HelloWorld.cfg"/>
+    </exec>
+  </target>
+
+  <target name="cppcheck" description="C++ code check" >
+    <exec dir="${build.native}" executable="${cppcheck.cmd}" failonerror="true">
+      <arg line="--xml --xml-version=2 --enable=all --inconclusive --language=c++ *.cpp"/>
+      <redirector error="cppcheck.xml"/>
+    </exec>
+  </target>
+
+  <target name="gcovr-xml" description="Run gcovr and generate coverage output" depends="run,run-test">
+      <exec dir="${build.native}" executable="${gcovr.cmd}" failonerror="true">
+        <arg line="--branches --xml-pretty -r ."/>
+        <redirector output="gcovr.xml"/>
+    </exec>
+    </target>
+ 
+    <target name="gcovr-html" description="Run gcovr and generate coverage output" depends="run,run-test">
+      <exec dir="${build.native}" executable="${gcovr.cmd}" failonerror="true">
+        <arg line="--branches -r . --html --html-details -o gcovr-report.html"/>
+      </exec>
+    </target>
+</project>

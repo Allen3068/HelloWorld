@@ -1,5 +1,6 @@
-CXX = g++
-CXXFLAGS = -g
+CXX = gcc
+#CXXFLAGS = -g 
+CXXFLAGS = -g -fprofile-arcs -ftest-coverage -fPIC -O0
 INCS = -I./
 OBJS = Addition.o Multiply.o
 
@@ -10,4 +11,4 @@ exampleapp: ExampleApp.cpp $(OBJS)
 	$(CXX) $(CXXFLAGS) -c $< -o $@ $(INCS)
 
 clean:
-	rm *.o exampleapp gmon.out
+	rm -f *.o exampleapp 

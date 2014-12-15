@@ -58,7 +58,7 @@
       <arg value="clean"/>
     </exec>
     <delete quiet="true">
-      <fileset dir="${build.native}/Docs/html" includes="**/*" />
+      <fileset dir="${build.native}/Docs" includes="**/*" />
     </delete>
     <delete quiet="true">
       <fileset dir="${basedir}" includes="cppcheck.xml" />

@@ -64,7 +64,7 @@
       <fileset dir="${basedir}" includes="cppcheck.xml" />
     </delete>
     <delete quiet="true">
-      <fileset dir="${build.native}" includes="gcovr-report.xml" />
+      <fileset dir="${basedir}" includes="gcovr.xml" />
     </delete>
     <delete quiet="true">
       <fileset dir="${basedir}" includes="**/*.gcda,**/*.gcno,**/gcovr-report*.html" />
@@ -99,8 +99,8 @@
 
   <target name="gcovr-xml" description="Run gcovr and generate coverage output" depends="run,run-test">
       <exec dir="${build.native}" executable="${gcovr.cmd}" failonerror="true">
-        <arg line="--branches --xml-pretty -r . -o gcovr-report.xml"/>
-        <!--<redirector output="gcovr.xml"/>-->
+        <arg line="--branches --xml-pretty -r . "/>
+        <redirector output="gcovr.xml"/>
     </exec>
     </target>
  
